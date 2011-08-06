@@ -21,4 +21,5 @@ $routes['#^/users/([0-9]{1,5})/update$#i'] = array('controller' => 'users', 'act
 
 $routes['#^/session/new$#i'] = array('controller' => 'session', 'action' => 'add');
 $routes['#^/session/create$#i'] = array('controller' => 'session', 'action' => 'create');
+$routes['#^/session/destroy$#i'] = array('controller' => 'session', 'action' => 'destroy');
 

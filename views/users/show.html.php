@@ -5,6 +5,7 @@
 ?>
 <html>
 <body>
+  <p><a href="/~e46762/wda/showvotes/session/destroy">Log out</a><p>
   <?php if (isset($template->user)): ?>
     <h2>This is the show page for the user "<?php echo $template->user->username; ?>" and the id "<?php echo $template->user->id; ?>"</h2>
   <?php else: ?>

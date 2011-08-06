@@ -25,9 +25,6 @@ class SessionController {
     // TODO
     // get username and password
     // and validate them against values in db
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
     if (!$user = User::retrieve(array('username' => $_POST['username']))) {
       // user doesn't exist
       // redirect back to login page
@@ -50,4 +47,18 @@ class SessionController {
     exit;
   }
 
+  public function destroy() {
+    $_SESSION = array();
+    if (ini_get('session.use_cookies')) {
+      $params = session_get_cookie_params();
+      setcookie(session_name(), '', time() - 42000,
+        $params['path'], $params['domain'],
+        $params['secure'], $params['httponly']
+      );
+    }
+    session_destroy();
+
+    header("Location: /~e46762/wda/showvotes/session/new", false);
+    exit;
+  }
 }
