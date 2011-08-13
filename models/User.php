@@ -2,8 +2,21 @@
 
 require_once(LIBRARY_PATH . DS . 'Database.php');
 
+/**
+ * This is the User class.
+ *
+ * @author donal.ellis@rmit.edu.au
+ */
 class User {
 
+  /**
+   * A method for retrieving users from the users table.
+   *
+   * @param array $data An optional array of key:value pairs to be used as
+   *                    parameters in the SQL query.
+   * @return array An array of database Objects where each Object represents a
+   *               user.
+   */
   public static function retrieve(array $data = array()) {
 
     $sql = 'SELECT * FROM users';
@@ -43,6 +56,15 @@ class User {
   }
 
   public static function create(array $data) {
+
+  }
+
+  /**
+   * An example private method to show the @access tag for PhpDocumentor.
+   *
+   * @access private 
+   */
+  private static function example() {
 
   }
 
