@@ -53,4 +53,15 @@ class UsersController {
     $this->template->display('show.html.php');
   }
 
+  public function add() {
+    $this->template->display('add.html.php');
+  }
+
+  public function create() {
+    // TODO need to validate data
+
+    // go to this if the create fails
+    // $this->template->display('add.html.php');
+  }
+
 }
