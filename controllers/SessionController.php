@@ -42,7 +42,8 @@ class SessionController {
     // credentials are correct
     // add user to session
     // redirect to users show page
-    $_SESSION['user'] = $user->id;
+    $_SESSION['user']['id'] = $user->id;
+    $_SESSION['user']['role_id'] = $user->role_id;
     header("Location: /~e46762/wda/showvotes/users/{$user->id}");
     exit;
   }

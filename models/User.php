@@ -41,15 +41,17 @@ class User {
 
       $statement->execute($values);
       // result is FALSE if no rows found
-      $result = $statement->fetch(PDO::FETCH_OBJ);
+      $result = $statement->fetchAll(PDO::FETCH_OBJ);
     
       $database->pdo = null;
     } catch (PDOException $e) {
       echo $e->getMessage();
       exit;
     }
-    if ($result) {
+    if (count($result) > 1) {
       return $result;
+    } else if (count($result) == 1) {
+      return $result[0];
     } else {
       return NULL;
     }

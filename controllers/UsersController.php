@@ -14,6 +14,17 @@ class UsersController {
   }
 
   public function index() {
+    // must be logged in and the admin to access this page
+    if (!isset($_SESSION['user'])) {
+      header("Location: /~e46762/wda/showvotes/session/new");
+      exit;
+    }
+    if ($_SESSION['user']['role_id'] > 1) {
+      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']['id']}");
+      exit;
+    }
+
+    $this->template->users = User::retrieve();
     $this->template->display('index.html.php');
   }
 
@@ -23,9 +34,9 @@ class UsersController {
       header("Location: /~e46762/wda/showvotes/session/new");
       exit;
     }
-    if ($_SESSION['user'] != $id) {
+    if ($_SESSION['user']['role_id'] > 1 && $_SESSION['user']['id'] != $id) {
       // this user is trying to access a different user
-      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']}");
+      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']['id']}");
       exit;
     }
 
