@@ -10,6 +10,49 @@ require_once(LIBRARY_PATH . DS . 'Database.php');
 class User {
 
   /**
+   * If validation fails, errors are written to this variable.
+   */
+  private static $errors;
+
+  /**
+   * A method for validating the data
+   *
+   * @param $data An array of POSTed data.
+   * @return bool Whether the data is valid or not.
+   */
+  public static function validates(array $data) {
+    $errors = array();
+
+    if (!isset($data['name']) || empty($data['name'])) {
+      $errors['name'] = 'You must provide your name';
+    }
+    if (!isset($data['email']) || empty($data['email'])) {
+      $errors['email'] = 'You must provide your email';
+    }
+    if (!isset($data['username']) || empty($data['username'])) {
+      $errors['username'] = 'You must provide your username';
+    }
+    if (!isset($data['password']) || empty($data['password'])) {
+      $errors['password'] = 'You must provide your password';
+    }
+
+    self::$errors = $errors;
+    if (count($errors)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Returns any validation errors.
+   *
+   * @return array An array of errors, or an empty array.
+   */
+  public static function errors() {
+    return self::$errors;
+  }
+
+  /**
    * A method for retrieving users from the users table.
    *
    * @param array $data An optional array of key:value pairs to be used as
@@ -57,8 +100,42 @@ class User {
     }
   }
 
+  /**
+   * Writes a new row to the users table based on given data.
+   *
+   * @param array $data The POSTed data.
+   * @return int Returns id of the inserted row (or throws an Exception)
+   */
   public static function create(array $data) {
+    // TODO could do a check here to ensure data exists
 
+    // assumes all new users will not be admin
+    $sql  = 'INSERT INTO users (name, email, username, password, role_id) VALUES (?, ?, ?, ?, 2)';
+    $values = array(
+      $data['name'],
+      $data['email'],
+      $data['username'],
+      $data['password']
+    );
+
+    try {
+      $database = Database::getInstance();
+    
+      $statement = $database->pdo->prepare($sql);
+      $return = $statement->execute($values);
+   
+      if ($return) {
+        $id = $database->pdo->lastInsertId();
+      }
+      $database->pdo = null;
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+      exit;
+    }
+    if ($return) {
+      return $id;
+    }
+    return false;
   }
 
   /**
@@ -66,7 +143,7 @@ class User {
    *
    * @access private 
    */
-  private static function example() {
+  private static function sanitise() {
 
   }
 

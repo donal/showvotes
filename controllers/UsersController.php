@@ -54,14 +54,36 @@ class UsersController {
   }
 
   public function add() {
+    if (isset($_SESSION['user']['errors'])) {
+      $this->template->errors = $_SESSION['user']['errors'];
+      unset($_SESSION['user']['errors']);
+    }
     $this->template->display('add.html.php');
   }
 
   public function create() {
+    // must have some POSTed data
+    // could check for referer here
+    if (!isset($_POST) || empty($_POST)) {
+      header("Location: /~e46762/wda/showvotes/users/new");
+      exit;
+    }
     // TODO need to validate data
+    if (!User::validates($_POST)) {
+      // store errors in session and redirect
+      $_SESSION['user']['errors'] = User::errors();
+      header("Location: /~e46762/wda/showvotes/users/new");
+      exit;
+    }
 
-    // go to this if the create fails
-    // $this->template->display('add.html.php');
+    // create a new user
+    // log the user in
+    // redirect to user's home page
+    $id = User::create($_POST);
+    $_SESSION['user']['id'] = $id;
+    $_SESSION['user']['role_id'] = 2; // assumes all newly created users are not admins
+    header("Location: /~e46762/wda/showvotes/users/{$id}");
+    exit;
   }
 
 }

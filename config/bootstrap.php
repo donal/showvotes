@@ -14,7 +14,7 @@ $routes['#^/home$#i'] = array('controller' => 'home', 'action' => 'index');
 $routes['#^/home/index$#i'] = array('controller' => 'home', 'action' => 'index');
 $routes['#^/users$#i'] = array('controller' => 'users', 'action' => 'index');
 $routes['#^/users/new$#i'] = array('controller' => 'users', 'action' => 'add');
-$routes['#^users/create$#i'] = array('controller' => 'users', 'action' => 'create');
+$routes['#^/users/create$#i'] = array('controller' => 'users', 'action' => 'create');
 $routes['#^/users/([0-9]{1,5})$#i'] = array('controller' => 'users', 'action' => 'show');
 $routes['#^/users/([0-9]{1,5})/edit$#i'] = array('controller' => 'users', 'action' => 'edit');
 $routes['#^/users/([0-9]{1,5})/update$#i'] = array('controller' => 'users', 'action' => 'edit');
