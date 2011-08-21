@@ -139,6 +139,40 @@ class User {
   }
 
   /**
+   * Updates an existing row in the users table based on given data.
+   *
+   * @param int $id The row id of the user to update.
+   * @param array $data The POSTed data.
+   * @return int bool Whether update was successful or not.
+   */
+  public static function update($id, array $data) {
+    // TODO could do a check here to ensure data exists
+
+    // assumes all new users will not be admin
+    $sql  = 'UPDATE users SET name = ?, email = ?, username = ?, password = ?  WHERE id = ?';
+    $values = array(
+      $data['name'],
+      $data['email'],
+      $data['username'],
+      $data['password'],
+      $id
+    );
+
+    try {
+      $database = Database::getInstance();
+    
+      $statement = $database->pdo->prepare($sql);
+      $return = $statement->execute($values);
+   
+      $database->pdo = null;
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+      exit;
+    }
+    return $return;
+  }
+
+  /**
    * An example private method to show the @access tag for PhpDocumentor.
    *
    * @access private 

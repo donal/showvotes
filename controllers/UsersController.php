@@ -86,4 +86,54 @@ class UsersController {
     exit;
   }
 
+  public function edit($id) {
+    // must be logged in to access this page
+    if (!isset($_SESSION['user'])) {
+      header("Location: /~e46762/wda/showvotes/session/new");
+      exit;
+    }
+    if ($_SESSION['user']['role_id'] > 1 && $_SESSION['user']['id'] != $id) {
+      // this user is trying to access a different user
+      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']['id']}");
+      exit;
+    }
+
+    if (!$user = User::retrieve(array('id' => $id))) {
+      // something has gone wrong with db request
+      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']['id']}");
+      exit;
+    }
+    $this->template->user = $user;
+
+    if (isset($_SESSION['user']['errors'])) {
+      $this->template->errors = $_SESSION['user']['errors'];
+      unset($_SESSION['user']['errors']);
+    }
+
+    $this->template->display('edit.html.php');
+  }
+
+  public function update($id) {
+    // must have some POSTed data
+    // could check for referer here
+    if (!isset($_POST) || empty($_POST)) {
+      header("Location: /~e46762/wda/showvotes/users/{$id}");
+      exit;
+    }
+    // TODO need to validate data
+    if (!User::validates($_POST)) {
+      // store errors in session and redirect
+      $_SESSION['user']['errors'] = User::errors();
+      header("Location: /~e46762/wda/showvotes/users/{$id}/edit");
+      exit;
+    }
+
+    // update user
+    // redirect to user's show page
+    User::update($id, $_POST);
+    header("Location: /~e46762/wda/showvotes/users/{$id}");
+    exit;
+  }
+
+
 }
