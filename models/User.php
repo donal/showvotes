@@ -20,20 +20,31 @@ class User {
    * @param $data An array of POSTed data.
    * @return bool Whether the data is valid or not.
    */
-  public static function validates(array $data) {
+  public static function validates(array &$data) {
     $errors = array();
 
+    // error checks from specific to general
+    if (!preg_match("/^[a-z ]+$/i", $data['name'])) {
+      $errors['name'] = 'Your name must only be characters';
+    }
     if (!isset($data['name']) || empty($data['name'])) {
       $errors['name'] = 'You must provide your name';
     }
+    // only unset the name data after checking for all errors
+    if (isset($errors['name'])) {
+      unset($data['name']);
+    }
     if (!isset($data['email']) || empty($data['email'])) {
       $errors['email'] = 'You must provide your email';
+      unset($data['email']);
     }
     if (!isset($data['username']) || empty($data['username'])) {
       $errors['username'] = 'You must provide your username';
+      unset($data['username']);
     }
     if (!isset($data['password']) || empty($data['password'])) {
       $errors['password'] = 'You must provide your password';
+      unset($data['password']);
     }
 
     self::$errors = $errors;

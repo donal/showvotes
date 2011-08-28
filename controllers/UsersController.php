@@ -58,6 +58,10 @@ class UsersController {
       $this->template->errors = $_SESSION['user']['errors'];
       unset($_SESSION['user']['errors']);
     }
+    if (isset($_SESSION['user'])) {
+      $this->template->user = $_SESSION['user'];
+      unset($_SESSION['user']);
+    }
     $this->template->display('add.html.php');
   }
 
@@ -69,8 +73,15 @@ class UsersController {
       exit;
     }
     // TODO need to validate data
-    if (!User::validates($_POST)) {
+    $data = array(
+      'name' => $_POST['name'],
+      'email' => $_POST['email'],
+      'username' => $_POST['username'],
+      'password' => $_POST['password'],
+    );
+    if (!User::validates($data)) {
       // store errors in session and redirect
+      $_SESSION['user'] = $data;
       $_SESSION['user']['errors'] = User::errors();
       header("Location: /~e46762/wda/showvotes/users/new");
       exit;
