@@ -54,6 +54,16 @@ class UsersController {
   }
 
   public function add() {
+    // must be logged in and the admin to access this page
+    if (!isset($_SESSION['user'])) {
+      header("Location: /~e46762/wda/showvotes/session/new");
+      exit;
+    }
+    if ($_SESSION['user']['role_id'] > 1) {
+      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']['id']}");
+      exit;
+    }
+
     if (isset($_SESSION['user']['errors'])) {
       $this->template->errors = $_SESSION['user']['errors'];
       unset($_SESSION['user']['errors']);
@@ -125,6 +135,17 @@ class UsersController {
   }
 
   public function update($id) {
+    // must be logged in to access this page
+    if (!isset($_SESSION['user'])) {
+      header("Location: /~e46762/wda/showvotes/session/new");
+      exit;
+    }
+    if ($_SESSION['user']['role_id'] > 1 && $_SESSION['user']['id'] != $id) {
+      // this user is trying to access a different user
+      header("Location: /~e46762/wda/showvotes/users/{$_SESSION['user']['id']}");
+      exit;
+    }
+
     // must have some POSTed data
     // could check for referer here
     if (!isset($_POST) || empty($_POST)) {
