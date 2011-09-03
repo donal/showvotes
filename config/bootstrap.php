@@ -23,6 +23,7 @@ $routes['#^/shows$#i'] = array('controller' => 'shows', 'action' => 'index');
 $routes['#^/shows/new$#i'] = array('controller' => 'shows', 'action' => 'add');
 $routes['#^/shows/create$#i'] = array('controller' => 'shows', 'action' => 'create');
 $routes['#^/shows/([0-9]{1,5})$#i'] = array('controller' => 'shows', 'action' => 'show');
+$routes['#^/shows/([0-9]{1,5})/tweets$#i'] = array('controller' => 'shows', 'action' => 'tweets');
 
 $routes['#^/session/new$#i'] = array('controller' => 'session', 'action' => 'add');
 $routes['#^/session/create$#i'] = array('controller' => 'session', 'action' => 'create');

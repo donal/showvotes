@@ -165,7 +165,7 @@ class ShowsController {
     // must have some POSTed data
     // could check for referer here
     if (!isset($_POST) || empty($_POST)) {
-      header("Location: /~e46762/wda/showvotes/show/{$id}");
+      header("Location: /~e46762/wda/showvotes/shows/{$id}");
       exit;
     }
     // TODO need to validate data
@@ -179,8 +179,40 @@ class ShowsController {
     // update show
     // redirect to show's show page
     Show::update($id, $_POST);
-    header("Location: /~e46762/wda/showvotes/show/{$id}");
+    header("Location: /~e46762/wda/showvotes/shows/{$id}");
     exit;
+  }
+
+  public function tweets($id) {
+    $this->template->id = $id;
+
+    // get the show with id = $id
+    $show = Show::retrieve(array('id' => $id));
+    if (count($show) == 1) {
+      $this->template->show = $show;
+    } else if (count($show) == 0) {
+      header("Location: /~e46762/wda/showvotes/shows/{$id}");
+      exit;
+    }
+
+    // get tweets with this show's hashtag
+    $search = urlencode($show->hashtag); 
+    $ch = curl_init("http://search.twitter.com/search.json?q={$search}&result_type=recent");
+
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+   
+    $tweets = array(); 
+    if ($result = curl_exec($ch)) {
+      $json_obj = json_decode($result);
+      foreach ($json_obj->results as $result) {
+        $tweets[] = $result->text;
+      }
+    }
+    curl_close($ch);
+    $this->template->tweets = $tweets;
+
+    $this->template->display('tweets.html.php');
   }
 
 
