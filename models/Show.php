@@ -117,10 +117,11 @@ class Show {
     // TODO could do a check here to ensure data exists
 
     // assumes all new shows will not be admin
-    $sql  = 'INSERT INTO shows (name, image) VALUES (?, ?)';
+    $sql  = 'INSERT INTO shows (name, image, hashtag) VALUES (?, ?, ?)';
     $values = array(
       $data['name'],
       $data['image'],
+      $data['hashtag'],
     );
 
     try {
@@ -154,10 +155,11 @@ class Show {
     // TODO could do a check here to ensure data exists
 
     // assumes all new shows will not be admin
-    $sql  = 'UPDATE shows SET name = ?, image = ? WHERE id = ?';
+    $sql  = 'UPDATE shows SET name = ?, image = ?, hashtag = ? WHERE id = ?';
     $values = array(
       $data['name'],
       $data['image'],
+      $data['hashtag'],
       $id
     );
 

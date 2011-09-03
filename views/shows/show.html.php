@@ -11,6 +11,7 @@
 ?>" and the id "<?php echo $template->show->id; ?>"</h2>
     <ul>
       <li>Name: <?php echo $template->show->name; ?></li>
+      <li>Hash Tag: <?php echo $template->show->hashtag; ?></li>
       <li>Image: <img src="../webroot/images/shows/<?php echo $template->show->image; ?>" /></li>
     </ul>
   <?php else: ?>

@@ -95,6 +95,7 @@ class ShowsController {
     // TODO need to validate data
     $data = array(
       'name' => $_POST['name'],
+      'hashtag' => $_POST['hashtag'],
       'image' => $_FILES['image'],
     );
     if (!Show::validates($data)) {

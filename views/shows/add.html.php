@@ -19,6 +19,17 @@
       </td>
     </tr>
     <tr>
+      <td>Hash Tag:</td>
+      <td><input type="text" name="hashtag" value="<?php echo $template->show['hashtag']; ?>" /></td>
+      <td>
+        <?php
+          if (isset($template->errors['hashtag'])) {
+            echo $template->errors['hashtag'];
+          }
+        ?>
+      </td>
+    </tr>
+    <tr>
       <td>Image:</td>
       <td><input type="file" name="image" /></td>
       <td>
