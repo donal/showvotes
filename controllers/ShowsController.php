@@ -215,5 +215,23 @@ class ShowsController {
     $this->template->display('tweets.html.php');
   }
 
+  public function ajaxtweets($id) {
+    $this->template->id = $id;
+
+    // get the show with id = $id
+    $show = Show::retrieve(array('id' => $id));
+    if (count($show) == 1) {
+      $this->template->show = $show;
+    } else if (count($show) == 0) {
+      header("Location: /~e46762/wda/showvotes/shows/{$id}");
+      exit;
+    }
+
+    // get tweets with this show's hashtag
+    $search = urlencode($show->hashtag); 
+
+    $this->template->display('ajaxtweets.html.php');
+  }
+
 
 }
